@@ -1,0 +1,3 @@
+export const GIT_REPOSITORY = Symbol("GIT_REPOSITORY");
+export const CHERRY_PICK_PROMPTER = Symbol("CHERRY_PICK_PROMPTER");
+export const COMMANDER_PROGRAM = Symbol("COMMANDER_PROGRAM");

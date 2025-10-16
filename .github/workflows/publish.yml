@@ -1,0 +1,77 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'development' }}
+    steps:
+      - name: Checkout 🛬
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node ⚙️
+        uses: ./.github/actions/setup-node
+        with:
+          npm_token: ${{ secrets.NPM_TOKEN }}
+
+      - name: Run unit tests 🧪
+        run: yarn test
+
+      - name: Build package 🏗️
+        run: yarn build
+
+      - name: Prepare dev version metadata 🏷️
+        if: github.ref_name == 'dev'
+        id: dev_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          DEV_VERSION="${VERSION}-dev.${GITHUB_RUN_NUMBER}"
+          export DEV_VERSION
+          node <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const pkgPath = path.resolve('package.json');
+          const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+          pkg.version = process.env.DEV_VERSION;
+          fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+          NODE
+          echo "version=$DEV_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Publish dev package 🚀
+        if: github.ref_name == 'dev'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --tag dev
+
+      - name: Publish release package 🚀
+        if: github.ref_name == 'main'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
+
+      - name: Restore package metadata ♻️
+        if: github.ref_name == 'dev'
+        run: git checkout -- package.json
+
+      - name: Summarize publication 📝
+        if: github.ref_name == 'dev'
+        run: echo "Published dev build version ${{ steps.dev_version.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Summarize production publication 📝
+        if: github.ref_name == 'main'
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Published release version ${VERSION}" >> "$GITHUB_STEP_SUMMARY"

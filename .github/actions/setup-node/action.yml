@@ -15,21 +15,29 @@ runs:
   using: "composite"
   steps:
     - name: Authenticate npm 🔑
+      if: inputs.npm_token != ''
       shell: bash
       run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm_token }}" > ~/.npmrc
+    - name: Enable Corepack 🧰
+      shell: bash
+      run: corepack enable
+    - name: Pin Yarn 1.22.22 📦
+      shell: bash
+      run: corepack prepare yarn@1.22.22 --activate
     - name: Cache Dependencies ⌛️
       uses: actions/cache@v4
       id: cache-node-modules
       with:
-        path: 'node_modules'
-        key: ${{ runner.os }}-node_modules-${{ hashFiles('package*.json') }}-${{ hashFiles('.github/actions/setup-node/action.yml') }}-node-${{ hashFiles('.nvmrc') }}-${{ inputs.version }}
+        path: |
+          node_modules
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock') }}-${{ hashFiles('.github/actions/setup-node/action.yml') }}-node-${{ hashFiles('.nvmrc') }}-${{ inputs.version }}
     - name: Setup Node ⚙️
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.version }}
         node-version-file: '.nvmrc'
-        cache: npm
+        cache: yarn
     - name: Install dependencies 📥
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
       shell: bash
-      run: npm ci
+      run: yarn install --frozen-lockfile

@@ -1,4 +1,4 @@
-FROM node:20-alpine3.18 AS base
+FROM node:24-alpine3.20 AS base
 
 ENV DIR /app
 WORKDIR $DIR
@@ -8,10 +8,12 @@ FROM base AS dev
 
 ENV NODE_ENV=development
 
-COPY package*.json .
+COPY package.json yarn.lock ./
 
-RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ".npmrc" && \
-    npm ci && \
+RUN corepack enable && \
+    corepack prepare yarn@1.22.22 --activate && \
+    echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ".npmrc" && \
+    yarn install --frozen-lockfile && \
     rm -f .npmrc
 
 COPY tsconfig*.json .
@@ -20,4 +22,4 @@ COPY nodemon.json .
 COPY src src
 COPY playground playground
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "dev"]
