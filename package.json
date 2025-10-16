@@ -2,8 +2,7 @@
   "name": "git-tools-cli",
   "version": "0.1.0",
   "description": "Interactive tooling to automate Git workflows.",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Fernando Dorantes",
   "license": "MIT",
@@ -32,7 +31,7 @@
     "yarn": ">=4.0.0"
   },
   "packageManager": "yarn@4.9.4",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "vite build --watch",
     "prepublishOnly": "yarn build",
@@ -88,7 +87,7 @@
     "simple-git": "^3.27.0"
   },
   "bin": {
-    "git-tools": "dist/cli/index.cjs"
+    "git-tools": "dist/cli/index.js"
   },
   "files": [
     "dist"
@@ -96,12 +95,12 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./cli": {
-      "import": "./dist/cli/index.js",
-      "require": "./dist/cli/index.cjs"
+      "require": "./dist/cli/index.js",
+      "default": "./dist/cli/index.js"
     }
   }
 }

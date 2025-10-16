@@ -38,13 +38,9 @@ export default defineConfig({
         index: path.resolve(__dirname, "src/index.ts"),
         "cli/index": path.resolve(__dirname, "src/cli/index.ts"),
       },
-      formats: ["es", "cjs"],
-      fileName: (format, entryName) => {
-        if (entryName === "cli/index") {
-          return format === "es" ? "cli/index.js" : "cli/index.cjs";
-        }
-        return format === "es" ? "index.js" : "index.cjs";
-      },
+      formats: ["cjs"],
+      fileName: (_format, entryName) =>
+        entryName === "cli/index" ? "cli/index.js" : "index.js",
     },
     rollupOptions: {
       external: externalDeps,

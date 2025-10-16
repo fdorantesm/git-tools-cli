@@ -1,5 +1,4 @@
 import process from "node:process";
-import { fileURLToPath } from "node:url";
 
 import { NestFactory } from "@nestjs/core";
 import chalk from "chalk";
@@ -45,8 +44,9 @@ export async function runCli(argv: string[] = process.argv): Promise<void> {
   }
 }
 
-const isDirectExecution = fileURLToPath(import.meta.url) === process.argv[1];
+const isDirectExecution =
+  typeof require !== "undefined" && require.main === module;
 
 if (isDirectExecution) {
-  runCli();
+  void runCli();
 }
