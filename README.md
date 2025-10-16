@@ -4,16 +4,16 @@ Git Tools CLI is a NestJS standalone application packaged as a CLI to automate a
 
 ## 🚀 Installation
 
-> **Prerequisite:** Node.js 24 or newer with Corepack enabled.
+> **Prerequisite:** Node.js 24 or newer with Corepack enabled and Yarn 1.22.22 available.
 
 ```bash
 yarn global add git-tools-cli
 ```
 
-You can also run the CLI without a global install using `yarn dlx`:
+You can also run the CLI without a global install using `npx`:
 
 ```bash
-yarn dlx git-tools-cli cherry-pick --from origin/feature-branch
+npx git-tools-cli cherry-pick --from origin/feature-branch
 ```
 
 ## 🧭 Usage

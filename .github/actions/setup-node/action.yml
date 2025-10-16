@@ -21,6 +21,9 @@ runs:
     - name: Enable Corepack 🧰
       shell: bash
       run: corepack enable
+    - name: Pin Yarn 1.22.22 📦
+      shell: bash
+      run: corepack prepare yarn@1.22.22 --activate
     - name: Cache Dependencies ⌛️
       uses: actions/cache@v4
       id: cache-node-modules
@@ -37,4 +40,4 @@ runs:
     - name: Install dependencies 📥
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
       shell: bash
-      run: yarn install --immutable
+      run: yarn install --frozen-lockfile

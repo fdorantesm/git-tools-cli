@@ -8,11 +8,12 @@ FROM base AS dev
 
 ENV NODE_ENV=development
 
-COPY package.json yarn.lock .yarnrc.yml ./
+COPY package.json yarn.lock ./
 
 RUN corepack enable && \
+    corepack prepare yarn@1.22.22 --activate && \
     echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ".npmrc" && \
-    yarn install --immutable && \
+    yarn install --frozen-lockfile && \
     rm -f .npmrc
 
 COPY tsconfig*.json .

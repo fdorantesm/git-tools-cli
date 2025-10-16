@@ -1,7 +1,7 @@
 node_modules/
 dist/
 .yarn/
-.tsbuildinfo
+*.tsbuildinfo
 .tmp
 .idea
 .env
