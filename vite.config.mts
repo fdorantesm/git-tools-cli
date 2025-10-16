@@ -1,9 +1,12 @@
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 import packageJson from "./package.json" assert { type: "json" };
+
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 const externalDeps = [
   "@nestjs/common",
@@ -30,7 +33,7 @@ export default defineConfig({
     },
   },
   build: {
-    target: "node18",
+    target: "node20",
     outDir: "dist",
     sourcemap: true,
     lib: {

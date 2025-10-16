@@ -4,6 +4,8 @@ Git Tools CLI is a NestJS standalone application packaged as a CLI to automate a
 
 ## 🚀 Installation
 
+> **Prerequisite:** Node.js 24 or newer with Corepack enabled.
+
 ```bash
 yarn global add git-tools-cli
 ```

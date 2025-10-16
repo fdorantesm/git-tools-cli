@@ -29,7 +29,7 @@
     "tests",
     "docs",
     "playground",
-    "vite.config.ts",
+    "vite.config.mts",
     "vitest.config.ts",
     "eslint.config.mjs",
     "commitlint.config.ts"
