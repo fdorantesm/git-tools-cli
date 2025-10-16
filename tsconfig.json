@@ -5,6 +5,8 @@
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "Bundler",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "strict": true,
@@ -18,7 +20,7 @@
       "@/src/*": ["src/*"],
       "@/tests/*": ["tests/*"]
     },
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "node"]
   },
   "exclude": ["node_modules", "dist"]
 }

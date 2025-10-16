@@ -1,1 +1,2 @@
-npx lint-staged
+scripts/ensure-no-dist-staged.sh
+yarn lint-staged

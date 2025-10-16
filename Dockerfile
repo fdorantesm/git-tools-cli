@@ -8,10 +8,11 @@ FROM base AS dev
 
 ENV NODE_ENV=development
 
-COPY package*.json .
+COPY package.json yarn.lock .yarnrc.yml ./
 
-RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ".npmrc" && \
-    npm ci && \
+RUN corepack enable && \
+    echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ".npmrc" && \
+    yarn install --immutable && \
     rm -f .npmrc
 
 COPY tsconfig*.json .
@@ -20,4 +21,4 @@ COPY nodemon.json .
 COPY src src
 COPY playground playground
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "dev"]
