@@ -85,9 +85,9 @@ export class CherryPickService {
   private async applyCherryPick(
     promptResult: CherryPickPromptResult,
   ): Promise<void> {
-    const commitHashes = promptResult.selectedCommits.map(
-      commit => commit.hash,
-    );
+    const commitHashes = [...promptResult.selectedCommits]
+      .reverse()
+      .map(commit => commit.hash);
     const requiresNoCommit =
       promptResult.applyMode === "no-commit" ||
       promptResult.messageStrategy === "custom";

@@ -48,7 +48,9 @@ export default defineConfig({
         chunkFileNames: "chunks/[name]-[hash].js",
         exports: "named",
         banner: chunk =>
-          chunk.name === "cli/index" ? "#!/usr/bin/env node" : undefined,
+          chunk.facadeModuleId?.endsWith("src/cli/index.ts")
+            ? "#!/usr/bin/env node"
+            : undefined,
       },
     },
     emptyOutDir: false,

@@ -15,7 +15,7 @@ runs:
   using: "composite"
   steps:
     - name: Authenticate npm 🔑
-      if: ${{ inputs.npm_token != '' }}
+      if: inputs.npm_token != ''
       shell: bash
       run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm_token }}" > ~/.npmrc
     - name: Enable Corepack 🧰
@@ -35,5 +35,6 @@ runs:
         node-version-file: '.nvmrc'
         cache: yarn
     - name: Install dependencies 📥
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
       shell: bash
       run: yarn install --immutable
